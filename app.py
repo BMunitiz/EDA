@@ -200,7 +200,7 @@ def make_line(input_df, input_x,input_y):
     line = px.line(input_df, 
                       x=input_x, 
                       y=input_y, 
-                      color="Country Name", 
+                      color= "Country Name", 
                       line_group="Country Name",  
                       line_shape="linear", 
                       title="Top countries that attract tourists")
@@ -349,10 +349,13 @@ with col[0]:
     
     with st.expander('About', expanded=True):
         st.write('''
-            - Data: World travel data.
+            - Data: World Tourism Organization, Yearbook of Tourism Statistics, Compendium of Tourism Statistics and data files.
+            - Thanks to Chanin Nantasenamat, for this amazing tutorial: https://blog.streamlit.io/crafting-a-dashboard-app-in-python-using-streamlit/
             - :orange[**Gains/Losses**]: Countries with difference in tourism arrivals for selected year
             - :orange[**Countries tourism**]: percentage of countries with annual inbound/ outbound tourism > 50,000
-            ''')
+            '''
+                )
+        
 
 # %% Exploratory data analisys.ipynb 36
 with col[1]:
