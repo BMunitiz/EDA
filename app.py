@@ -5,7 +5,7 @@ __all__ = ['inbound_data', 'country_codes', 'new_inbound_data', 'top_inbound', '
            'outbound', 'population', 'GDP', 'country_names', 'complete_data', 'col', 'select_data', 'make_heatmap',
            'make_choropleth', 'make_line', 'calculate_arrivals_difference', 'make_donut', 'format_number']
 
-# %% Exploratory data analisys.ipynb 1
+# %% Exploratory data analisys.ipynb 0
 import pandas as pd 
 import numpy as np 
 import plotly 
@@ -25,55 +25,55 @@ st.set_page_config(
 
 pd.set_option("display.float.format", lambda x: "%.2f" % x)
 
-# %% Exploratory data analisys.ipynb 2
+# %% Exploratory data analisys.ipynb 1
 inbound_data = pd.read_excel('travel_data.xls', sheet_name="number_of_arrival", header=3, index_col=0)
 #inbound_data.head()
 
-# %% Exploratory data analisys.ipynb 3
+# %% Exploratory data analisys.ipynb 2
 country_codes = pd.read_excel('travel_data.xls', sheet_name= 'country code')
 #country_codes.head()
 
-# %% Exploratory data analisys.ipynb 4
+# %% Exploratory data analisys.ipynb 3
 inbound_data = pd.merge(country_codes, inbound_data, left_on = "Country Code", right_on = "Country Code", how="left")
 #inbound_data.head()
 
-# %% Exploratory data analisys.ipynb 5
+# %% Exploratory data analisys.ipynb 4
 inbound_data = inbound_data.set_index("Country Name")
 #inbound_data.head()
 
-# %% Exploratory data analisys.ipynb 6
+# %% Exploratory data analisys.ipynb 5
 #select columns from year 2007 to 2017
 new_inbound_data = pd.concat([inbound_data["Country Code"],inbound_data.loc[:,"2005":"2017"]], axis=1)
 #new_inbound_data.head()
 
-# %% Exploratory data analisys.ipynb 7
+# %% Exploratory data analisys.ipynb 6
 #replace missing value by 0
 new_inbound_data = new_inbound_data.fillna(0)
 #new_inbound_data.head()
 
-# %% Exploratory data analisys.ipynb 8
+# %% Exploratory data analisys.ipynb 7
 new_inbound_data.set_index(["Country Code"], inplace = True, append = True)
 #new_inbound_data.head()
 
-# %% Exploratory data analisys.ipynb 9
+# %% Exploratory data analisys.ipynb 8
 #use stack to change the data frame shape
 new_inbound_data = new_inbound_data.stack()
 #new_inbound_data.head()
 
-# %% Exploratory data analisys.ipynb 10
+# %% Exploratory data analisys.ipynb 9
 new_inbound_data = pd.DataFrame(new_inbound_data)
 #new_inbound_data.head()
 
-# %% Exploratory data analisys.ipynb 11
+# %% Exploratory data analisys.ipynb 10
 new_inbound_data = new_inbound_data.reset_index()
 #new_inbound_data.head()
 
-# %% Exploratory data analisys.ipynb 12
+# %% Exploratory data analisys.ipynb 11
 #rename column names
 new_inbound_data= new_inbound_data.rename(columns = {"level_2":"Year",0:"Amount"})
 #new_inbound_data.head()
 
-# %% Exploratory data analisys.ipynb 14
+# %% Exploratory data analisys.ipynb 13
 #find the top countries that attract tourists
 top_inbound = inbound_data.sort_values("2017", ascending=False).head(10)
 top_inbound_list = list(top_inbound.index)
@@ -87,7 +87,7 @@ top_inbound_list = list(top_inbound.index)
 top_inbound_data = new_inbound_data.loc[new_inbound_data["Country Name"].isin(top_inbound_list)]
 #top_inbound_data.head()
 
-# %% Exploratory data analisys.ipynb 16
+# %% Exploratory data analisys.ipynb 15
 #importing all data  
 
 inbound = pd.read_excel('travel_data.xls', sheet_name="number_of_arrival", header=3, index_col=0)
@@ -98,7 +98,7 @@ country_names = pd.read_excel('travel_data.xls', sheet_name= 'country code')
 
 
 
-# %% Exploratory data analisys.ipynb 17
+# %% Exploratory data analisys.ipynb 16
 #select only the relevant columns 2005 to 2017
 def select_data(df):
     amount = df['Indicator Name'][0]
@@ -117,37 +117,37 @@ inbound = select_data(inbound)
     
                               
 
-# %% Exploratory data analisys.ipynb 18
+# %% Exploratory data analisys.ipynb 17
 outbound = select_data(outbound)
 #outbound.head()
 
-# %% Exploratory data analisys.ipynb 19
+# %% Exploratory data analisys.ipynb 18
 population = select_data(population)
 #population.head()
 
-# %% Exploratory data analisys.ipynb 20
+# %% Exploratory data analisys.ipynb 19
 GDP = select_data(GDP)
 #GDP.head()
 
-# %% Exploratory data analisys.ipynb 21
+# %% Exploratory data analisys.ipynb 20
 complete_data = inbound.merge(outbound)
 #complete_data.head()
 
-# %% Exploratory data analisys.ipynb 22
+# %% Exploratory data analisys.ipynb 21
 complete_data = complete_data.merge(population) 
 #complete_data.head()
 
-# %% Exploratory data analisys.ipynb 23
+# %% Exploratory data analisys.ipynb 22
 complete_data = complete_data.merge(GDP)
 #complete_data.head()
 
-# %% Exploratory data analisys.ipynb 24
+# %% Exploratory data analisys.ipynb 23
 complete_data.Year = complete_data.Year.astype('int64')
 
-# %% Exploratory data analisys.ipynb 25
+# %% Exploratory data analisys.ipynb 24
 alt.theme.enable("dark")
 
-# %% Exploratory data analisys.ipynb 26
+# %% Exploratory data analisys.ipynb 25
 with st.sidebar:
     st.title('World travel Dashboard')
     
@@ -160,7 +160,7 @@ with st.sidebar:
     color_theme_list = ['blues', 'cividis', 'greens', 'inferno', 'magma', 'plasma', 'reds', 'rainbow', 'turbo', 'viridis']
     selected_color_theme = st.selectbox('Select a color theme', color_theme_list)
 
-# %% Exploratory data analisys.ipynb 27
+# %% Exploratory data analisys.ipynb 26
 def make_heatmap(input_df, input_y, input_x, input_color, input_color_theme):
     heatmap = alt.Chart(input_df).mark_rect().encode(
             y=alt.Y(f'{input_y}:O', axis=alt.Axis(title="Year", titleFontSize=18, titlePadding=15, titleFontWeight=900, labelAngle=0)),
@@ -178,7 +178,7 @@ def make_heatmap(input_df, input_y, input_x, input_color, input_color_theme):
     # height=300
     return heatmap
 
-# %% Exploratory data analisys.ipynb 28
+# %% Exploratory data analisys.ipynb 27
 def make_choropleth(input_df, input_id, input_column, input_color_theme):
     choropleth = px.choropleth(input_df, locations=input_id, color=input_column, locationmode="country names",
                                color_continuous_scale=input_color_theme,
@@ -195,15 +195,15 @@ def make_choropleth(input_df, input_id, input_column, input_color_theme):
     )
     return choropleth
 
-# %% Exploratory data analisys.ipynb 30
+# %% Exploratory data analisys.ipynb 29
 def make_line(input_df, input_x,input_y):
     line = px.line(input_df, 
                       x=input_x, 
                       y=input_y, 
                       color= "Country Name", 
                       line_group="Country Name",  
-                      line_shape="linear", 
-                      title="Top countries that attract tourists")
+                      line_shape="linear"
+                      )
     line.update_layout(
         template='plotly_dark',
         plot_bgcolor='rgba(0, 0, 0, 0)',
@@ -213,7 +213,7 @@ def make_line(input_df, input_x,input_y):
     )
     return line
 
-# %% Exploratory data analisys.ipynb 31
+# %% Exploratory data analisys.ipynb 30
 def calculate_arrivals_difference(input_df, input_year):
   selected_year_data = input_df[input_df['Year'] == input_year].reset_index()
   previous_year_data = input_df[input_df['Year'] == input_year - 1].reset_index()
@@ -222,7 +222,7 @@ def calculate_arrivals_difference(input_df, input_year):
 
     
 
-# %% Exploratory data analisys.ipynb 32
+# %% Exploratory data analisys.ipynb 31
 def make_donut(input_response, input_text, input_color):
   if input_color == 'blue':
       chart_color = ['#29b5e8', '#155F7A']
@@ -265,7 +265,7 @@ def make_donut(input_response, input_text, input_color):
   ).properties(width=130, height=130)
   return plot_bg + plot + text
 
-# %% Exploratory data analisys.ipynb 33
+# %% Exploratory data analisys.ipynb 32
 def format_number(num):
     if num > 1000000:
         if not num % 1000000:
@@ -273,10 +273,10 @@ def format_number(num):
         return f'{round(num / 1000000, 1)} M'
     return f'{num // 1000} K'
 
-# %% Exploratory data analisys.ipynb 34
+# %% Exploratory data analisys.ipynb 33
 col = st.columns((3, 5), gap='medium')
 
-# %% Exploratory data analisys.ipynb 35
+# %% Exploratory data analisys.ipynb 34
 with col[0]:
     st.markdown('#### Gains/Losses')
 
@@ -357,7 +357,7 @@ with col[0]:
                 )
         
 
-# %% Exploratory data analisys.ipynb 36
+# %% Exploratory data analisys.ipynb 35
 with col[1]:
     st.markdown('#### Total Tourism')
     
@@ -366,6 +366,8 @@ with col[1]:
     
     heatmap = make_heatmap(complete_data, 'Year', 'Country Name', 'International tourism, number of arrivals', selected_color_theme)
     st.altair_chart(heatmap, use_container_width=True)
+
+    st.markdown('#### Top countries that attract tourists')
 
     line = make_line(top_inbound_data,'Year', 'Amount')
     st.plotly_chart(line, use_container_width=True)
